@@ -117,7 +117,7 @@ const loginUser = asyncHandler( async (req, res) => {
       throw new ApiError(404, "User does not found");
    }
 
-   const isPasswordValid = await user.isPasswordCorrect(password);
+   const isPasswordValid = await user.isPasswordCorrect(password);   
 
    if(!isPasswordValid) {
       throw new ApiError(401, "Incorrect password");
@@ -151,8 +151,8 @@ const logoutUser = asyncHandler (async (req, res) => {
    await User.findByIdAndUpdate(
       req.user._id,
       {
-         $set: {
-            refreshToken: undefined
+         $unset: {
+            refreshToken: 1
          }
       },
       {
@@ -445,7 +445,7 @@ const getWatchHistory = asyncHandler( async (req, res) => {
       new ApiResponse(
          200,
          user[0].watchHistory,
-         "User watchHistory data fetched successfully"
+         "User watch history data fetched successfully"
       )
    )
 })
